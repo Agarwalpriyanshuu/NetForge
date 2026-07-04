@@ -9,6 +9,10 @@ from ui.menu_bar import create_menu
 from ui.navigation_rail import NavigationRail
 from ui.status_bar import NetForgeStatusBar
 from ui.workspace import Workspace
+from ui.pages.dashboard.dashboard_page import DashboardPage
+from ui.sidebar import Sidebar
+from ui.page_manager import PageManager
+from core.navigation_data import SIDEBAR_ITEMS
 
 
 class MainWindow(QMainWindow):
@@ -24,6 +28,7 @@ class MainWindow(QMainWindow):
         self.setStatusBar(NetForgeStatusBar())
 
         self.build_ui()
+        self.navigation_changed(0, "Dashboard")
 
     def build_ui(self):
 
@@ -35,12 +40,44 @@ class MainWindow(QMainWindow):
 
         splitter = QSplitter()
 
-        splitter.addWidget(Workspace())
+        self.page_manager = PageManager()
+
+        self.page_manager.workspace.tab_changed.connect(
+        self.tab_changed
+        )
+
+        splitter.addWidget(self.page_manager.workspace)
 
         splitter.setStretchFactor(0, 1)
 
-        layout.addWidget(NavigationRail())
+        self.navigation = NavigationRail()
+
+        self.navigation.page_selected.connect(
+        self.navigation_changed
+        )
+
+        layout.addWidget(self.navigation)
+
+        self.sidebar = Sidebar()
+
+        layout.addWidget(self.sidebar)
 
         layout.addWidget(splitter)
 
         self.setCentralWidget(container)
+
+    def navigation_changed(self, index, page_name):
+
+        self.page_manager.change_page(index)
+
+        self.sidebar.load_items(
+            SIDEBAR_ITEMS[page_name]
+        )
+
+    def tab_changed(self, page_name):
+
+        from core.navigation_data import SIDEBAR_ITEMS
+
+        self.sidebar.load_items(
+            SIDEBAR_ITEMS[page_name]
+        )

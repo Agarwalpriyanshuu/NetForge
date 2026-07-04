@@ -1,4 +1,4 @@
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
     QListWidget,
     QListWidgetItem,
@@ -6,6 +6,8 @@ from PySide6.QtWidgets import (
 
 
 class NavigationRail(QListWidget):
+    page_selected = Signal(int, str)
+    
     def __init__(self):
         super().__init__()
 
@@ -18,16 +20,19 @@ class NavigationRail(QListWidget):
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
-        items = [
-            ("🏠", "Dashboard"),
-            ("💼", "Workspace"),
-            ("🌐", "Network"),
-            ("🖥", "Remote"),
-            ("🔍", "Diagnostics"),
-            ("📦", "Packet Lab"),
-            ("🛠", "Utilities"),
-            ("📄", "Reports"),
-            ("⚙", "Settings"),
+        items = [ 
+            ("🏠", "Dashboard"), 
+            ("🌐", "Network"), 
+            ("🖥", "Remote"), 
+            ("📦", "Packet Lab"), 
+            ("⚙", "Settings"), 
+        ]
+        self.page_names = [
+            "Dashboard",
+            "Network",
+            "Remote",
+            "Packet Lab",
+            "Settings",
         ]
 
         for icon, text in items:
@@ -37,3 +42,10 @@ class NavigationRail(QListWidget):
             self.addItem(item)
 
         self.setCurrentRow(0)
+        self.currentRowChanged.connect(self.navigation_changed)
+    
+    def navigation_changed(self, index):
+
+        page_name = self.page_names[index]
+
+        self.page_selected.emit(index, page_name)
