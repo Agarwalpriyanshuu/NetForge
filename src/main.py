@@ -1,3 +1,4 @@
+import database.database
 from app.application import NetForgeApplication
 
 
