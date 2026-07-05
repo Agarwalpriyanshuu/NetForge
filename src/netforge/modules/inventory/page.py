@@ -6,6 +6,8 @@ from PySide6.QtWidgets import (
 
 from netforge.modules.inventory.toolbar import InventoryToolbar
 from netforge.modules.inventory.table import InventoryTable
+from netforge.modules.inventory.controller import InventoryController
+from netforge.modules.inventory.table_model import InventoryTableModel
 from PySide6.QtCore import Qt
 
 
@@ -19,6 +21,10 @@ class InventoryPage(QWidget):
         self.toolbar = InventoryToolbar()
 
         self.table = InventoryTable()
+
+        self.model = InventoryTableModel()
+
+        self.table.setModel(self.model)
 
         self.status = QLabel("Total Devices : 0")
 
@@ -39,4 +45,25 @@ class InventoryPage(QWidget):
         layout.addWidget(self.table)
         layout.addWidget(self.status)
         layout.addWidget(self.empty)
-      
+
+        self.controller = InventoryController(self)
+
+        self.toolbar.new_btn.clicked.connect(
+            self.controller.new_connection
+        )
+
+        self.toolbar.refresh_btn.clicked.connect(
+            self.controller.refresh
+        )
+
+        self.toolbar.delete_btn.clicked.connect(
+            self.controller.delete_connection
+        )  
+
+        self.toolbar.edit_btn.clicked.connect(
+            self.controller.edit_connection
+        ) 
+
+        self.table.doubleClicked.connect(
+            self.controller.open_details
+        )

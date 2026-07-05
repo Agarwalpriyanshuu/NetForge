@@ -3,17 +3,11 @@ from PySide6.QtWidgets import (
     QHeaderView,
 )
 
-from netforge.modules.inventory.inventory_model import InventoryTableModel
-
 
 class InventoryTable(QTableView):
 
     def __init__(self):
         super().__init__()
-
-        self.model = InventoryTableModel()
-
-        self.setModel(self.model)
 
         self.setSortingEnabled(True)
 

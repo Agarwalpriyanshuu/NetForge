@@ -25,10 +25,20 @@ class Connection(Base):
 
     username: Mapped[str] = mapped_column(String(100))
 
+    password: Mapped[str] = mapped_column(
+        String(255),
+        default=""
+    )
+
+    protocol: Mapped[str] = mapped_column(
+        String(20),
+        default="SSH"
+    )
+
     port: Mapped[int] = mapped_column(Integer)
 
-    description: Mapped[str] = mapped_column(
-        String(255),
+    notes: Mapped[str] = mapped_column(
+        String(1000),
         default=""
     )
 

@@ -1,71 +1,71 @@
+from sqlalchemy.orm import Session
+
 from netforge.database.database import SessionLocal
 from netforge.models.connection import Connection
 
 
 class ConnectionService:
 
-    def create_connection(
-        self,
-        name,
-        hostname,
-        ip_address,
-        username,
-        port,
-        description="",
-        tags="",
-        favorite=False,
-    ):
+    def create_connection(self, data):
 
-        session = SessionLocal()
+        db: Session = SessionLocal()
 
-        try:
+        connection = Connection(
+            name=data["name"],
+            hostname=data["hostname"],
+            ip_address=data["ip"],
+            username=data["username"],
+            password=data["password"],
+            protocol=data["protocol"],
+            port=int(data["port"]),
+            notes=data["notes"],
+        )
 
-            connection = Connection(
-                name=name,
-                hostname=hostname,
-                ip_address=ip_address,
-                username=username,
-                port=port,
-                description=description,
-                tags=tags,
-                favorite=favorite,
-            )
+        db.add(connection)
+        db.commit()
+        db.close()
 
-            session.add(connection)
+    def delete(self, connection_id):
 
-            session.commit()
+        db = SessionLocal()
 
-            session.refresh(connection)
+        connection = db.get(Connection, connection_id)
 
-            return connection
+        if connection:
+            db.delete(connection)
+            db.commit()
 
-        finally:
-            session.close()
+        db.close()
 
-    def get_connections(self):
+    def update(self, connection_id, data):
 
-        session = SessionLocal()
+        db = SessionLocal()
 
-        try:
+        connection = db.get(Connection, connection_id)
 
-            return session.query(Connection).all()
+        if connection is None:
+            db.close()
+            return
 
-        finally:
-            session.close()
+        connection.name = data["name"]
+        connection.hostname = data["hostname"]
+        connection.ip_address = data["ip"]
+        connection.username = data["username"]
+        connection.password = data["password"]
+        connection.protocol = data["protocol"]
+        connection.port = int(data["port"])
+        connection.notes = data["notes"]
 
-    def delete_connection(self, connection_id):
+        db.commit()
 
-        session = SessionLocal()
+        db.close()
 
-        try:
+    def get_all(self):
 
-            connection = session.get(Connection, connection_id)
+        db: Session = SessionLocal()
 
-            if connection:
+        data = db.query(Connection).all()
 
-                session.delete(connection)
+        db.close()
 
-                session.commit()
-
-        finally:
-            session.close()
+        return data
