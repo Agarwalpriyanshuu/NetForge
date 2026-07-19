@@ -16,7 +16,9 @@ dependencies = [
     "SQLAlchemy",
     "loguru",
     "pydantic",
-    "pyqtdarktheme"
+    "pyqtdarktheme",
+    "paramiko",
+    "pyte"
 ]
 
 [tool.setuptools]

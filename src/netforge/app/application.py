@@ -2,6 +2,7 @@ import sys
 
 from PySide6.QtWidgets import QApplication
 
+from netforge.core.theme import apply_theme
 from netforge.ui.main_window import MainWindow
 
 
@@ -13,6 +14,8 @@ class NetForgeApplication:
         self.app.setApplicationName("NetForge")
         self.app.setOrganizationName("NetForge")
         self.app.setApplicationVersion("0.0.1")
+
+        apply_theme(self.app)
 
         self.window = MainWindow()
 

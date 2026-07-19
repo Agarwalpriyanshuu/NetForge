@@ -28,4 +28,7 @@ class PageManager:
 
         title, page = self.pages[index]
 
-        self.workspace.open_page(title, page())
+        if self.workspace.has_tab(title):
+            self.workspace.switch_to_tab(title)
+        else:
+            self.workspace.open_page(title, page())
