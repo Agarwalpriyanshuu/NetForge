@@ -1,9 +1,11 @@
 from PySide6.QtWidgets import (
-    QWidget,
     QHBoxLayout,
-    QPushButton,
     QLineEdit,
+    QPushButton,
+    QWidget,
 )
+
+from netforge.ui.components.primary_button import PrimaryButton
 
 
 class InventoryToolbar(QWidget):
@@ -13,7 +15,7 @@ class InventoryToolbar(QWidget):
 
         layout = QHBoxLayout(self)
 
-        self.new_btn = QPushButton("➕ New Device")
+        self.new_btn = PrimaryButton("➕ New Device")
 
         self.edit_btn = QPushButton("✏ Edit")
 

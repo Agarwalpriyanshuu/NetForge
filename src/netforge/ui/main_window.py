@@ -13,6 +13,7 @@ from netforge.ui.pages.dashboard.dashboard_page import DashboardPage
 from netforge.ui.sidebar import Sidebar
 from netforge.ui.page_manager import PageManager
 from netforge.core.navigation_data import SIDEBAR_ITEMS
+from netforge.core.event_bus import EventBus
 
 
 class MainWindow(QMainWindow):
@@ -29,6 +30,12 @@ class MainWindow(QMainWindow):
 
         self.build_ui()
         self.navigation_changed(0, "Dashboard")
+
+        EventBus.instance().open_ssh_requested.connect(self._bring_ssh_page_forward)
+
+    def _bring_ssh_page_forward(self, connection):
+        ssh_index = self.navigation.page_names.index("SSH")
+        self.navigation.setCurrentRow(ssh_index)
 
     def build_ui(self):
 

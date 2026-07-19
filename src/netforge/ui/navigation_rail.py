@@ -11,6 +11,8 @@ class NavigationRail(QListWidget):
     def __init__(self):
         super().__init__()
 
+        self.setObjectName("navigationRail")
+
         self.setFixedWidth(70)
 
         self.setSpacing(8)

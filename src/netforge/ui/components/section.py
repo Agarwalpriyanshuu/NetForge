@@ -10,6 +10,8 @@ class Section(QFrame):
     def __init__(self, title):
         super().__init__()
 
+        self.setProperty("class", "section")
+
         self.layout = QVBoxLayout(self)
 
         heading = QLabel(title)

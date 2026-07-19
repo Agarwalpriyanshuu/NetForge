@@ -7,6 +7,8 @@ from PySide6.QtWidgets import (
     QPushButton,
 )
 
+from netforge.core.event_bus import EventBus
+
 
 class ConnectionDetailsDialog(QDialog):
 
@@ -66,11 +68,15 @@ class ConnectionDetailsDialog(QDialog):
 
         self.close_btn.clicked.connect(self.close)
 
-        self.ssh_btn.clicked.connect(self.not_implemented)
+        self.ssh_btn.clicked.connect(self.open_ssh)
         self.ping_btn.clicked.connect(self.not_implemented)
         self.browser_btn.clicked.connect(self.not_implemented)
         self.edit_btn.clicked.connect(self.not_implemented)
         self.delete_btn.clicked.connect(self.not_implemented)
+
+    def open_ssh(self):
+        EventBus.instance().open_ssh_requested.emit(self.connection)
+        self.close()
 
     def not_implemented(self):
         print("Feature not implemented yet.")
