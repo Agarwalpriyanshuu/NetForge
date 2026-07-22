@@ -3,6 +3,7 @@ from netforge.ui.workspace_manager import WorkspaceManager
 from netforge.ui.pages.dashboard.dashboard_page import DashboardPage
 from netforge.modules.ssh.page import SSHPage
 from netforge.modules.inventory.page import InventoryPage
+from netforge.modules.diagnostics.page import DiagnosticsPage
 from netforge.ui.pages.packet_lab.packet_lab_page import PacketLabPage
 from netforge.ui.pages.settings.settings_page import SettingsPage
 
@@ -16,9 +17,10 @@ class PageManager:
         self.pages = {
             0: ("Dashboard", DashboardPage),
             1: ("Inventory", InventoryPage),
-            2: ("SSH", SSHPage),
-            3: ("Packet Lab", PacketLabPage),
-            4: ("Settings", SettingsPage),
+            2: ("Diagnostics", DiagnosticsPage),
+            3: ("SSH", SSHPage),
+            4: ("Packet Lab", PacketLabPage),
+            5: ("Settings", SettingsPage),
         }
 
         # Open Dashboard on startup

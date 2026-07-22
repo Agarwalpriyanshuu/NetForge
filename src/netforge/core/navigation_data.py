@@ -14,6 +14,13 @@ SIDEBAR_ITEMS = {
         "Favorites"
     ],
 
+    "Diagnostics": [
+        "Ping",
+        "Traceroute",
+        "DNS Lookup",
+        "Port Scanner"
+    ],
+
     "SSH": [
         "Open Session",
         "Saved Sessions",

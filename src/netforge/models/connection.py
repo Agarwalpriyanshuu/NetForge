@@ -26,7 +26,7 @@ class Connection(Base):
     username: Mapped[str] = mapped_column(String(100))
 
     password: Mapped[str] = mapped_column(
-        String(255),
+        String(512),
         default=""
     )
 

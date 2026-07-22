@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 
+from netforge.core.security import credential_vault
 from netforge.database.database import SessionLocal
 from netforge.models.connection import Connection
 
@@ -15,7 +16,7 @@ class ConnectionService:
             hostname=data["hostname"],
             ip_address=data["ip"],
             username=data["username"],
-            password=data["password"],
+            password=credential_vault.encrypt(data["password"]),
             protocol=data["protocol"],
             port=int(data["port"]),
             notes=data["notes"],
@@ -51,7 +52,7 @@ class ConnectionService:
         connection.hostname = data["hostname"]
         connection.ip_address = data["ip"]
         connection.username = data["username"]
-        connection.password = data["password"]
+        connection.password = credential_vault.encrypt(data["password"])
         connection.protocol = data["protocol"]
         connection.port = int(data["port"])
         connection.notes = data["notes"]
@@ -67,5 +68,15 @@ class ConnectionService:
         data = db.query(Connection).all()
 
         db.close()
+
+        # Decrypt in place: callers (Inventory dialogs, the SSH
+        # controller, ...) work with plaintext passwords in memory,
+        # exactly as before this feature existed. Only the on-disk
+        # representation is encrypted. These objects are already
+        # detached from the session (db.close() happened above), so
+        # mutating .password here does not risk an unexpected write
+        # back to the database.
+        for connection in data:
+            connection.password = credential_vault.decrypt(connection.password)
 
         return data

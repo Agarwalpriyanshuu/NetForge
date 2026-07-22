@@ -25,6 +25,7 @@ class NavigationRail(QListWidget):
         items = [ 
             ("🏠", "Dashboard"), 
             ("📚", "Inventory"),
+            ("🩺", "Diagnostics"),
             ("🖥", "SSH"),
             ("📦", "Packet Lab"), 
             ("⚙", "Settings"), 
@@ -32,6 +33,7 @@ class NavigationRail(QListWidget):
         self.page_names = [
             "Dashboard",
             "Inventory",
+            "Diagnostics",
             "SSH",
             "Packet Lab",
             "Settings",
